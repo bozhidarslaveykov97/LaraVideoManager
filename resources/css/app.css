@@ -1,2 +1,15 @@
 @import 'bootstrap';
 
+body {
+    background: #f3f4f6;
+}
+
+.btn {
+    border-radius: 0px;
+}
+.card {
+    border-radius: 0px;
+}
+.form-control {
+    border-radius: 0px;
+}

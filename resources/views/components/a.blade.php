@@ -1,3 +1,3 @@
-<a {{ $attributes->merge(['href' => '#', 'class' => '']) }}>
+<a {{ $attributes->merge(['href' => '#', 'class' => 'btn btn-link']) }}>
     {{ $slot }}
 </a>

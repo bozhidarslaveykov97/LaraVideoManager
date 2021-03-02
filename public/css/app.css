@@ -8556,5 +8556,16 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
-
+body {
+    background: #f3f4f6;
+}
+.btn {
+    border-radius: 0px;
+}
+.card {
+    border-radius: 0px;
+}
+.form-control {
+    border-radius: 0px;
+}
 
