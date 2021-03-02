@@ -12,8 +12,10 @@
 </head>
 <body>
 
-<div class="container pt-5">
+<div class="container" style="margin-top: 200px;">
+    <div class="d-flex align-items-center justify-content-center">
 
+    <div class="row">
     <div class="col-md-12">
         <a href="{{ route('dashboard') }}">
             <img src="logo-long.png" class="pb-5" />
@@ -25,7 +27,7 @@
         <div class="card">
         <div class="card-body">
         <h3>Lara Video Manager</h3>
-        <h4>Responsive web applicaiton to easy access and manage big file video/movie files.</h4>
+        <p>Responsive web applicaiton to easy access and manage big file video/movie files.</p>
 
         <br />
 
@@ -42,6 +44,8 @@
         </div>
 
     </div>
+    </div>
+</div>
 </div>
 </body>
 </html>

@@ -1,10 +1,13 @@
 <x-guest-layout>
 
-    <x-slot name="logo">
-        <a href="/">
-            <x-application-logo />
-        </a>
-    </x-slot>
+    <div class="row" style="width: 600px;">
+        <div class="col-md-12 text-center mb-3">
+            <a href="/">
+                <x-application-logo/>
+            </a>
+        </div>
+
+        <div class="col-md-12">
 
     <x-auth-card>
 
@@ -52,10 +55,12 @@
                     {{ __('Already registered?') }}
                 </a>
 
-                <x-button class="ml-4">
+                <x-button class="float-right">
                     {{ __('Register') }}
                 </x-button>
             </div>
         </form>
     </x-auth-card>
+        </div>
+        </div>
 </x-guest-layout>

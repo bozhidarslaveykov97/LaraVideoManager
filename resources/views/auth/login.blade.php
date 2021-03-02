@@ -1,10 +1,13 @@
 <x-guest-layout>
 
-    <x-slot name="logo">
-        <a href="/">
-            <x-application-logo />
-        </a>
-    </x-slot>
+    <div class="row" style="width: 600px;">
+        <div class="col-md-12 text-center mb-3">
+            <a href="/">
+                <x-application-logo/>
+            </a>
+        </div>
+
+        <div class="col-md-12">
 
     <x-auth-card>
         <!-- Session Status -->
@@ -48,10 +51,12 @@
                     </a>
                 @endif
 
-                <x-button class="ml-3">
+                <x-button class="float-right">
                     {{ __('Log in') }}
                 </x-button>
             </div>
         </form>
     </x-auth-card>
+        </div>
+        </div>
 </x-guest-layout>
