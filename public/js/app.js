@@ -11,15 +11,30 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+
+__webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+
+var LaraVideoUploader = __webpack_require__(/*! ./lara-video-uploader */ "./resources/js/lara-video-uploader.js");
+
+var uploader = new LaraVideoUploader();
+uploader.setFileSelector('#js-upload-video-file');
+uploader.setCsrfToken(jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content'));
+uploader.run();
+
+/***/ }),
+
+/***/ "./resources/js/lara-video-uploader.js":
+/*!*********************************************!*\
+  !*** ./resources/js/lara-video-uploader.js ***!
+  \*********************************************/
+/***/ ((module) => {
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-__webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
-
-
 
 var LaraVideoUploader = /*#__PURE__*/function () {
   function LaraVideoUploader() {
@@ -37,6 +52,11 @@ var LaraVideoUploader = /*#__PURE__*/function () {
     key: "setFileSelector",
     value: function setFileSelector(selector) {
       this.fileSelector = selector;
+    }
+  }, {
+    key: "setCsrfToken",
+    value: function setCsrfToken(token) {
+      this.csrfToken = token;
     }
   }, {
     key: "run",
@@ -74,13 +94,13 @@ var LaraVideoUploader = /*#__PURE__*/function () {
   }, {
     key: "uploadChunk",
     value: function uploadChunk() {
+      var blobEnd = this.chunkEnd - 1;
+      var contentRange = "bytes " + this.chunkStart + "-" + blobEnd + "/" + this.selectedFile.size;
       var oReq = new XMLHttpRequest();
       oReq.upload.addEventListener("progress", this.updateProgress);
       oReq.open("POST", '/upload-chunk', true);
-      var blobEnd = this.chunkEnd - 1;
-      var contentRange = "bytes " + this.chunkStart + "-" + blobEnd + "/" + this.selectedFile.size;
       oReq.setRequestHeader("Content-Range", contentRange);
-      oReq.setRequestHeader("X-CSRF-TOKEN", jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content')); // Add laravel CSRF token
+      oReq.setRequestHeader("X-CSRF-TOKEN", this.csrfToken); // Add laravel CSRF token
 
       console.log("Content-Range", contentRange);
       var instance = this;
@@ -115,18 +135,12 @@ var LaraVideoUploader = /*#__PURE__*/function () {
 
       oReq.send(this.chunkForm);
     }
-  }, {
-    key: "changeTheProgress",
-    value: function changeTheProgress(progress) {
-      var bootstrapProgressBar = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.js-upload-file-progress').find('.progress-bar');
-      bootstrapProgressBar.attr('aria-valuenow', progress);
-      bootstrapProgressBar.width(progress + '%');
-      bootstrapProgressBar.html(progress);
-    }
   }]);
 
   return LaraVideoUploader;
 }();
+
+module.exports = LaraVideoUploader;
 
 /***/ }),
 

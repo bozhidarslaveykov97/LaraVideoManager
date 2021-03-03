@@ -15,10 +15,4 @@
     <div id="video-information" style="width: 50%"></div>
     <div id="chunk-information" style="width: 50%"></div>
 
-    <script>
-        var uploader = new LaraVideoUploader();
-        uploader.setFileSelector('#js-upload-video-file');
-        uploader.run();
-    </script>
-
 </x-app-layout>
