@@ -2,7 +2,7 @@
 
     Add a video here:
     <br>
-    <input type="file" id="video-url-example">
+    <input type="file" id="js-upload-video-file">
     <br>
 
     <div class="js-upload-file-progress" style="display: none">
@@ -14,5 +14,11 @@
     <br>
     <div id="video-information" style="width: 50%"></div>
     <div id="chunk-information" style="width: 50%"></div>
+
+    <script>
+        var uploader = new LaraVideoUploader();
+        uploader.setFileSelector('#js-upload-video-file');
+        uploader.run();
+    </script>
 
 </x-app-layout>

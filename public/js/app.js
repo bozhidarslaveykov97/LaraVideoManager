@@ -128,10 +128,6 @@ var LaraVideoUploader = /*#__PURE__*/function () {
   return LaraVideoUploader;
 }();
 
-var uploader = new LaraVideoUploader();
-uploader.setFileSelector('#video-url-example');
-uploader.run();
-
 /***/ }),
 
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":

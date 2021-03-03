@@ -119,7 +119,3 @@ class LaraVideoUploader {
         bootstrapProgressBar.html(progress);
     };
 }
-
-var uploader = new LaraVideoUploader();
-uploader.setFileSelector('#video-url-example');
-uploader.run();
