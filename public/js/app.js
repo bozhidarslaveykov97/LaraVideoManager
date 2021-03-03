@@ -15505,6 +15505,19 @@ return jQuery;
 
 /***/ }),
 
+/***/ "./node_modules/font-awesome/scss/font-awesome.scss":
+/*!**********************************************************!*\
+  !*** ./node_modules/font-awesome/scss/font-awesome.scss ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./resources/css/app.css":
 /*!*******************************!*\
   !*** ./resources/css/app.css ***!
@@ -18246,6 +18259,7 @@ Popper.Defaults = Defaults;
 /******/ 		
 /******/ 		var deferredModules = [
 /******/ 			["./resources/js/app.js"],
+/******/ 			["./node_modules/font-awesome/scss/font-awesome.scss"],
 /******/ 			["./resources/css/app.css"]
 /******/ 		];
 /******/ 		// no chunk on demand loading

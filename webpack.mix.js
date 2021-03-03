@@ -14,4 +14,7 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('autoprefixer'),
-]);
+])
+.copy('node_modules/font-awesome/fonts/', 'public/fonts')
+.sass('node_modules/font-awesome/scss/font-awesome.scss', 'public/css')
+.version();

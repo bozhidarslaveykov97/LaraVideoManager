@@ -10,7 +10,6 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@tailwindcss/forms": "^0.2.1",
         "alpinejs": "^2.7.3",
         "autoprefixer": "^10.1.0",
         "axios": "^0.21",
@@ -18,10 +17,13 @@
         "lodash": "^4.17.19",
         "postcss": "^8.2.1",
         "postcss-import": "^12.0.1",
-        "tailwindcss": "^2.0.2"
+        "resolve-url-loader": "^3.1.2",
+        "sass": "^1.32.8",
+        "sass-loader": "^10.1.1"
     },
     "dependencies": {
         "bootstrap": "^4.6.0",
+        "font-awesome": "^4.7.0",
         "jquery": "^3.6.0",
         "popper.js": "^1.16.1",
         "uploadify": "^1.0.7"
