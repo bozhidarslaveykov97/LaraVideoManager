@@ -1,33 +1,24 @@
 <x-app-layout>
-
+{{--
     <!-- The `multiple` attribute lets users select multiple files. -->
-    <input type="file" id="file-selector" multiple>
+    <input type="file" id="file-selector">
 
-    <div clas="file-"
+    <div class="js-upload-file-progress" style="display: none">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+    </div>--}}
 
-    <script>
 
-        const fileSelector = document.getElementById('file-selector');
-        fileSelector.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-           readFile(file);
-        });
+    Add a video here:
+    <br>
+    <input type="file" id="video-url-example">
+    <br>
 
-       function readFile(file) {
-           const reader = new FileReader();
-           reader.addEventListener('load', (event) => {
-               const result = event.target.result;
-               // Do something with result
-           });
 
-           reader.addEventListener('progress', (event) => {
-               if (event.loaded && event.total) {
-                   const percent = (event.loaded / event.total) * 100;
-                   console.log(`Progress: ${Math.round(percent)}`);
-               }
-           });
-           reader.readAsDataURL(file);
-       }
-   </script>
+
+    <br>
+    <div id="video-information" style="width: 50%"></div>
+    <div id="chunk-information" style="width: 50%"></div>
 
 </x-app-layout>

@@ -23,6 +23,7 @@
     "dependencies": {
         "bootstrap": "^4.6.0",
         "jquery": "^3.6.0",
-        "popper.js": "^1.16.1"
+        "popper.js": "^1.16.1",
+        "uploadify": "^1.0.7"
     }
 }
