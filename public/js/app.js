@@ -47,12 +47,14 @@ var LaraVideoUploader = /*#__PURE__*/function () {
   function LaraVideoUploader() {
     _classCallCheck(this, LaraVideoUploader);
 
-    this.selectedFile = false;
+    // Chunk counters
     this.chunkStart = 0;
     this.chunkEnd = 0;
-    this.chunkCounter = 0; //break into 1 MB chunks for demo purposes
+    this.chunkCounter = 0; // Break into 1 MB chunks for demo purposes
 
-    this.chunkSize = 1048576;
+    this.chunkSize = 1048576; // Selected file by user
+
+    this.selectedFile = false;
   }
 
   _createClass(LaraVideoUploader, [{
@@ -63,7 +65,7 @@ var LaraVideoUploader = /*#__PURE__*/function () {
   }, {
     key: "setCsrfToken",
     value: function setCsrfToken(token) {
-      this.csrfToken = token;
+      this.csrfToken = token; // CRF token for laravel
     }
   }, {
     key: "setUploadUrl",

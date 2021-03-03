@@ -11,6 +11,6 @@ class Video extends Model
 
     public function file()
     {
-        return $this->hasOne(File::class);
+        return $this->hasOne(File::class, 'id', 'file_id')->first();
     }
 }

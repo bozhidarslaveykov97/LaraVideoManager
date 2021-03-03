@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -57,6 +58,14 @@ class UploadController extends Controller
             $findFile->save();
 
             $fileUrl = Storage::url($fileName);
+
+            $findVideo = Video::where('file_id', $findFile->id)->first();
+            if ($findVideo == null) {
+                $findVideo = new Video();
+                $findVideo->file_id = $findFile->id;
+                $findVideo->name = $findFile->name;
+            }
+            $findVideo->save();
 
             return ['status' => true, 'uploaded' => true, 'message' => 'File uploaded is finished.', 'file_url'=>$fileUrl];
         }

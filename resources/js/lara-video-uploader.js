@@ -8,15 +8,16 @@
 class LaraVideoUploader {
 
     constructor() {
-
-        this.selectedFile = false;
-
+        // Chunk counters
         this.chunkStart = 0;
         this.chunkEnd = 0;
         this.chunkCounter = 0;
 
-        //break into 1 MB chunks for demo purposes
+        // Break into 1 MB chunks for demo purposes
         this.chunkSize = 1048576;
+
+        // Selected file by user
+        this.selectedFile = false;
     };
 
     setFileSelector(selector) {
@@ -24,7 +25,7 @@ class LaraVideoUploader {
     };
 
     setCsrfToken(token) {
-        this.csrfToken = token;
+        this.csrfToken = token; // CRF token for laravel
     }
 
     setUploadUrl(url)
