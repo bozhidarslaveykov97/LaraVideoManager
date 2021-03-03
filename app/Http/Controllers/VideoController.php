@@ -18,7 +18,6 @@ class VideoController extends Controller
     {
         $video = Video::where('id', $id)->first();
 
-
         return view('video.show', compact('video'));
     }
 

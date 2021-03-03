@@ -4,11 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use App\Models\Video;
+use FFMpeg\Coordinate\Dimension;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 
 class UploadController extends Controller
 {
+
+    public $storagePath = false;
+    public $storageRealPath = false;
+
+    public function __construct()
+    {
+        $this->storagePath = 'app'.DIRECTORY_SEPARATOR.'public';
+        $this->storageRealPath = storage_path($this->storagePath);
+    }
 
     public function index()
     {
@@ -24,9 +36,7 @@ class UploadController extends Controller
         $numberOfChunks = $request->post('number_of_chunks');
         $chunkSize = $request->post('chunk_size');
 
-        $storagePath = 'app'.DIRECTORY_SEPARATOR.'public';
-        $storageRealPath = storage_path($storagePath);
-        $fileNameChunk = $storageRealPath . DIRECTORY_SEPARATOR . $fileName . '.chunk';
+        $fileNameChunk = $this->storageRealPath . DIRECTORY_SEPARATOR . $fileName . '.chunk';
 
         // Open temp file
         $tempFileInstance = fopen($fileNameChunk, $chunkCounter == 1 ? 'wb' : 'ab'); // Write if is first chunk, append if is next chunk
@@ -43,8 +53,8 @@ class UploadController extends Controller
 
         if ($uploadFinished) {
 
-            $newFileRealPath = $storageRealPath . DIRECTORY_SEPARATOR . $fileName;
-            $filePath = $storagePath . DIRECTORY_SEPARATOR . $fileName;
+            $newFileRealPath = $this->storageRealPath . DIRECTORY_SEPARATOR . $fileName;
+            $filePath = $this->storagePath . DIRECTORY_SEPARATOR . $fileName;
 
             rename($fileNameChunk, $newFileRealPath);
 
@@ -53,9 +63,12 @@ class UploadController extends Controller
                 $findFile = new File();
             }
             $findFile->name = $fileName;
+            $findFile->file_name = $fileName;
             $findFile->file_path = $filePath;
-            $findFile->storage_path = $storagePath;
+            $findFile->storage_path = $this->storagePath;
             $findFile->save();
+
+            $this->_generateVideoThumbnails($findFile->id);
 
             $fileUrl = Storage::url($fileName);
 
@@ -71,5 +84,48 @@ class UploadController extends Controller
         }
 
         return ['status' => true];
+    }
+
+    private function _generateVideoThumbnails(int $id)
+    {
+        $findFile = File::where('id', $id)->first();
+        if ($findFile == null) {
+            return false;
+        }
+
+        $videoRealPath = $this->storageRealPath . DIRECTORY_SEPARATOR . $findFile->file_name;
+
+        try {
+            $thumbnailFileName =  'video-thumbnail-' . $findFile->id . '.jpg';
+            $thumbnailGifFileName =  'video-thumbnail-animated-' . $findFile->id . '.gif';
+
+            $thumbnailRealFilePath = $this->storageRealPath . DIRECTORY_SEPARATOR . $thumbnailFileName;
+            $thumbnailFilePath = $this->storagePath . DIRECTORY_SEPARATOR . $thumbnailFileName;
+
+            $thumbnailGifRealFilePath = $this->storageRealPath . DIRECTORY_SEPARATOR . $thumbnailGifFileName;
+            $thumbnailGifFilePath = $this->storagePath . DIRECTORY_SEPARATOR . $thumbnailGifFileName;
+
+            $ffmpeg = FFMpeg::create();
+            $videoOpen = $ffmpeg->open($videoRealPath);
+            $videoOpen->frame(TimeCode::fromSeconds(3))->save($thumbnailRealFilePath);
+            $videoOpen->gif(TimeCode::fromSeconds(3), new Dimension(640, 480), 5)->save($thumbnailGifRealFilePath);
+
+            if (is_file($thumbnailGifRealFilePath)) {
+                $findFile->thumbnail_gif_name = $thumbnailGifFileName;
+                $findFile->thumbnail_gif_path = $thumbnailGifFilePath;
+            }
+
+            // dd($videoOpen->getFormat());
+
+            if (is_file($thumbnailRealFilePath)) {
+                $findFile->thumbnail_name = $thumbnailFileName;
+                $findFile->thumbnail_path = $thumbnailFilePath;
+            }
+
+            $findFile->save();
+
+        } catch (\Exception $e) {
+
+        }
     }
 }
