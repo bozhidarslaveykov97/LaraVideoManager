@@ -18,10 +18,11 @@ class CreateFilesTable extends Migration
             $table->string('name');
             $table->string('file_name');
             $table->string('file_path');
-            $table->string('thumbnail_name');
-            $table->string('thumbnail_path');
-            $table->string('thumbnail_gif_name');
-            $table->string('thumbnail_gif_path');
+            $table->string('file_size');
+            $table->string('thumbnail_name')->nullable();
+            $table->string('thumbnail_path')->nullable();
+            $table->string('thumbnail_gif_name')->nullable();
+            $table->string('thumbnail_gif_path')->nullable();
             $table->string('storage_path');
             $table->timestamps();
         });

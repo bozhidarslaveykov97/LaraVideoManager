@@ -63,6 +63,7 @@ class UploadController extends Controller
                 $findFile = new File();
             }
             $findFile->name = $fileName;
+            $findFile->file_size = filesize($newFileRealPath);
             $findFile->file_name = $fileName;
             $findFile->file_path = $filePath;
             $findFile->storage_path = $this->storagePath;

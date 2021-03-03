@@ -8568,4 +8568,7 @@ body {
 .form-control {
     border-radius: 0px;
 }
+.js-on-hover-gif {
+    cursor: pointer;
+}
 

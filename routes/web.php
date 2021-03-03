@@ -23,6 +23,8 @@ Route::get('/dashboard', function () {
 
 Route::resource('video', '\App\Http\Controllers\VideoController')->middleware(['auth']);
 Route::get('video/stream/{id}', '\App\Http\Controllers\VideoController@stream')->middleware(['auth'])->name('video.stream');
+Route::get('video/download/{id}', '\App\Http\Controllers\VideoController@download')->middleware(['auth'])->name('video.download');
+Route::get('video/delete/{id}', '\App\Http\Controllers\VideoController@delete')->middleware(['auth'])->name('video.delete');
 
 Route::get('/upload', '\App\Http\Controllers\UploadController@index')->middleware(['auth'])->name('upload.index');
 Route::post('/upload-chunk', '\App\Http\Controllers\UploadController@uploadChunk')

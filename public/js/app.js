@@ -15,6 +15,15 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.js-on-hover-gif').mouseenter(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('src', jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('gif'));
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.js-on-hover-gif').mouseleave(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('src', jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('original'));
+  });
+});
+
 var LaraVideoUploader = __webpack_require__(/*! ./lara-video-uploader */ "./resources/js/lara-video-uploader.js");
 
 var uploader = new LaraVideoUploader();
@@ -78,7 +87,12 @@ var LaraVideoUploader = /*#__PURE__*/function () {
       var _this = this;
 
       // Find the html input field
-      this.fileInput = document.querySelector(this.fileSelector); // When the file is selected
+      this.fileInput = document.querySelector(this.fileSelector);
+
+      if (!this.fileInput) {
+        return;
+      } // When the file is selected
+
 
       this.fileInput.addEventListener('change', function () {
         // User select the file

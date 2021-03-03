@@ -36,6 +36,9 @@ class LaraVideoUploader {
     run() {
         // Find the html input field
         this.fileInput = document.querySelector(this.fileSelector);
+        if (!this.fileInput) {
+            return;
+        }
 
         // When the file is selected
         this.fileInput.addEventListener('change', () => {
