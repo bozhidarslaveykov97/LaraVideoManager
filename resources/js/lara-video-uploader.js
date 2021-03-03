@@ -16,7 +16,7 @@ class LaraVideoUploader {
         this.chunkCounter = 0;
 
         //break into 1 MB chunks for demo purposes
-        this.chunkSize = 1000000;
+        this.chunkSize = 1048576;
     };
 
     setFileSelector(selector) {
@@ -45,8 +45,10 @@ class LaraVideoUploader {
             // Calculate the num of chunks for selected file
             this.numberOfChunks = Math.ceil(this.selectedFile.size / this.chunkSize);
 
-            // Reset the chunk start
+            // Reset the chunk
             this.chunkStart = 0;
+            this.chunkEnd = 0;
+            this.chunkCounter = 0;
 
             // Calculate the cunk end
             this.chunkEnd = this.chunkStart + this.chunkSize;
@@ -60,7 +62,9 @@ class LaraVideoUploader {
     };
 
     createChunk() {
+
         this.chunkCounter++;
+
         console.log("created chunk: ", this.chunkCounter);
 
         this.chunkEnd = Math.min(this.chunkStart + this.chunkSize, this.selectedFile.size);
@@ -70,6 +74,8 @@ class LaraVideoUploader {
 
         this.chunkForm = new FormData();
         this.chunkForm.append('file', this.chunk);
+        this.chunkForm.append('chunk_size', this.chunkSize);
+        this.chunkForm.append('file_name', this.selectedFile.name);
 
         console.log("Added file");
 
@@ -87,6 +93,13 @@ class LaraVideoUploader {
         oReq.open("POST", this.uploadUrl, true);
         oReq.setRequestHeader("Content-Range", contentRange);
         oReq.setRequestHeader("X-CSRF-TOKEN", this.csrfToken); // Add laravel CSRF token
+
+        this.chunkForm.append('chunk_counter', this.chunkCounter);
+        this.chunkForm.append('number_of_chunks', this.numberOfChunks);
+
+        if (this.chunkCounter == this.numberOfChunks) {
+            this.chunkForm.append('upload_finished', true);
+        }
 
         console.log("Content-Range", contentRange);
 
