@@ -11,11 +11,11 @@ namespace App;
 
 class LaraVideoStream
 {
-    private $path = "";
-    private $stream = "";
-    private $buffer = 102400;
+    private $path = false;
+    private $stream = false;
     private $start = -1;
     private $end = -1;
+    private $buffer = 102400;
     private $size = 0;
     private $contentType = 'video/mp4';
 
@@ -24,20 +24,41 @@ class LaraVideoStream
         $this->path = $filePath;
     }
 
-    public function setContentType($type)
+    /**
+     * Start streaming video content
+     */
+    function start()
     {
-        $this->contentType = $type;
+        $this->openFile();
+        $this->setHeader();
+        $this->stream();
+        $this->end();
+    }
+
+    /**
+     * close curretly opened stream
+     */
+    private function end()
+    {
+        fclose($this->stream);
+        exit;
     }
 
     /**
      * Open stream
      */
-    private function open()
+    private function openFile()
     {
         if (!($this->stream = fopen($this->path, 'rb'))) {
             die('Could not open stream for reading');
         }
     }
+
+    public function setContentType($type)
+    {
+        $this->contentType = $type;
+    }
+
 
     /**
      * Set proper header to serve the video content
@@ -101,15 +122,6 @@ class LaraVideoStream
     }
 
     /**
-     * close curretly opened stream
-     */
-    private function end()
-    {
-        fclose($this->stream);
-        exit;
-    }
-
-    /**
      * perform the streaming of calculated range
      */
     private function stream()
@@ -126,16 +138,5 @@ class LaraVideoStream
             flush();
             $i += $bytesToRead;
         }
-    }
-
-    /**
-     * Start streaming video content
-     */
-    function start()
-    {
-        $this->open();
-        $this->setHeader();
-        $this->stream();
-        $this->end();
     }
 }
