@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UploadController extends DefaultController
+class UploadController extends Controller
 {
 
     public function index()
     {
-        return view('admin.upload.index');
+        return view('upload.index');
     }
 
     public function uploadChunk(Request $request)
