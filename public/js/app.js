@@ -18,6 +18,7 @@ __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap
 var LaraVideoUploader = __webpack_require__(/*! ./lara-video-uploader */ "./resources/js/lara-video-uploader.js");
 
 var uploader = new LaraVideoUploader();
+uploader.setUploadUrl('/upload-chunk');
 uploader.setFileSelector('#js-upload-video-file');
 uploader.setCsrfToken(jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content'));
 uploader.run();
@@ -36,6 +37,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/**
+ * @author Bozhidar Slaveykov
+ * @email selfworksbg@gmail.com
+ * @package LaraVideoUploader
+ * @description Upload big files from the browser on chunks
+ */
 var LaraVideoUploader = /*#__PURE__*/function () {
   function LaraVideoUploader() {
     _classCallCheck(this, LaraVideoUploader);
@@ -59,12 +66,20 @@ var LaraVideoUploader = /*#__PURE__*/function () {
       this.csrfToken = token;
     }
   }, {
+    key: "setUploadUrl",
+    value: function setUploadUrl(url) {
+      this.uploadUrl = url;
+    }
+  }, {
     key: "run",
     value: function run() {
       var _this = this;
 
-      this.fileInput = document.querySelector(this.fileSelector);
+      // Find the html input field
+      this.fileInput = document.querySelector(this.fileSelector); // When the file is selected
+
       this.fileInput.addEventListener('change', function () {
+        // User select the file
         _this.selectedFile = _this.fileInput.files[0]; // Calculate the num of chunks for selected file
 
         _this.numberOfChunks = Math.ceil(_this.selectedFile.size / _this.chunkSize); // Reset the chunk start
@@ -88,7 +103,7 @@ var LaraVideoUploader = /*#__PURE__*/function () {
       console.log("i created a chunk of video" + this.chunkStart + "-" + this.chunkEnd + " minus 1");
       this.chunkForm = new FormData();
       this.chunkForm.append('file', this.chunk);
-      console.log("added file");
+      console.log("Added file");
       this.uploadChunk();
     }
   }, {
@@ -98,7 +113,7 @@ var LaraVideoUploader = /*#__PURE__*/function () {
       var contentRange = "bytes " + this.chunkStart + "-" + blobEnd + "/" + this.selectedFile.size;
       var oReq = new XMLHttpRequest();
       oReq.upload.addEventListener("progress", this.updateProgress);
-      oReq.open("POST", '/upload-chunk', true);
+      oReq.open("POST", this.uploadUrl, true);
       oReq.setRequestHeader("Content-Range", contentRange);
       oReq.setRequestHeader("X-CSRF-TOKEN", this.csrfToken); // Add laravel CSRF token
 

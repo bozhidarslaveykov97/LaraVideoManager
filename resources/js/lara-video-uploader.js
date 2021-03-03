@@ -1,3 +1,10 @@
+/**
+ * @author Bozhidar Slaveykov
+ * @email selfworksbg@gmail.com
+ * @package LaraVideoUploader
+ * @description Upload big files from the browser on chunks
+ */
+
 class LaraVideoUploader {
 
     constructor() {
@@ -20,10 +27,19 @@ class LaraVideoUploader {
         this.csrfToken = token;
     }
 
+    setUploadUrl(url)
+    {
+        this.uploadUrl = url;
+    }
+
     run() {
+        // Find the html input field
         this.fileInput = document.querySelector(this.fileSelector);
+
+        // When the file is selected
         this.fileInput.addEventListener('change', () => {
 
+            // User select the file
             this.selectedFile = this.fileInput.files[0];
 
             // Calculate the num of chunks for selected file
@@ -55,7 +71,7 @@ class LaraVideoUploader {
         this.chunkForm = new FormData();
         this.chunkForm.append('file', this.chunk);
 
-        console.log("added file");
+        console.log("Added file");
 
         this.uploadChunk();
 
@@ -68,7 +84,7 @@ class LaraVideoUploader {
 
         var oReq = new XMLHttpRequest();
         oReq.upload.addEventListener("progress", this.updateProgress);
-        oReq.open("POST", '/upload-chunk', true);
+        oReq.open("POST", this.uploadUrl, true);
         oReq.setRequestHeader("Content-Range", contentRange);
         oReq.setRequestHeader("X-CSRF-TOKEN", this.csrfToken); // Add laravel CSRF token
 
@@ -101,6 +117,7 @@ class LaraVideoUploader {
             //we start one chunk in, as we have uploaded the first one.
             //next chunk starts at + chunkSize from start
             instance.chunkStart += instance.chunkSize;
+
             //if start is smaller than file size - we have more to still upload
             if (instance.chunkStart < instance.selectedFile.size) {
                 //create the new chunk
