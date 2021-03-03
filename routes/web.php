@@ -22,6 +22,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/upload', '\App\Http\Controllers\UploadController@index')->middleware(['auth'])->name('upload.index');
-Route::get('/upload-chunk', '\App\Http\Controllers\UploadController@uploadChunk')->middleware(['auth'])->name('upload.upload_chunk');
+Route::post('/upload-chunk', '\App\Http\Controllers\UploadController@uploadChunk')
+    ->middleware(['auth'])
+    ->name('upload.upload_chunk');
 
 require __DIR__.'/auth.php';

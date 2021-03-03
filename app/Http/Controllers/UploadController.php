@@ -14,6 +14,6 @@ class UploadController extends Controller
 
     public function uploadChunk(Request $request)
     {
-        dd($request);
+        return ['status'=>true];
     }
 }
