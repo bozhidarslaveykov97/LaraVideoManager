@@ -74,7 +74,7 @@ class LaraVideoStream
                 $range = explode('-', $range);
                 $currentStart = $range[0];
 
-                $currentEnd = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : ($currentStart + (1024000 * 3)); // If is not isset current range, we will output the 3MB of video
+               $currentEnd = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : ($currentStart + (1024000 * 16)); // If is not isset current range, we will output the 16MB of video
             }
 
             $currentEnd = ($currentEnd > $this->end) ? $this->end : $currentEnd;
