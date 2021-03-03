@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,12 +22,14 @@ class UploadController extends Controller
         $chunkCounter = $request->post('chunk_counter');
         $numberOfChunks = $request->post('number_of_chunks');
         $chunkSize = $request->post('chunk_size');
-        $fileNameChunk = $fileName . '.chunk';
 
-       // Open temp file
-        $tempFileInstance = fopen($fileNameChunk, $chunkCounter == 1 ? 'wb' : 'ab');
+        $storagePath = 'app'.DIRECTORY_SEPARATOR.'public';
+        $storageRealPath = storage_path($storagePath);
+        $fileNameChunk = $storageRealPath . DIRECTORY_SEPARATOR . $fileName . '.chunk';
+
+        // Open temp file
+        $tempFileInstance = fopen($fileNameChunk, $chunkCounter == 1 ? 'wb' : 'ab'); // Write if is first chunk, append if is next chunk
         if ($tempFileInstance) {
-
             // Read binary input stream and append it to temp file
             $chunkFileInstance = fopen($fileFormInput->getRealPath(), 'rb');
             if ($chunkFileInstance) {
@@ -39,11 +42,25 @@ class UploadController extends Controller
 
         if ($uploadFinished) {
 
-            rename($fileNameChunk, $fileName);
+            $newFileRealPath = $storageRealPath . DIRECTORY_SEPARATOR . $fileName;
+            $filePath = $storagePath . DIRECTORY_SEPARATOR . $fileName;
 
-            return ['status'=>true, 'uploaded'=>true, 'message'=>'File uploaded is finished.'];
+            rename($fileNameChunk, $newFileRealPath);
+
+            $findFile = File::where('file_path', $filePath)->first();
+            if ($findFile == null) {
+                $findFile = new File();
+            }
+            $findFile->name = $fileName;
+            $findFile->file_path = $filePath;
+            $findFile->storage_path = $storagePath;
+            $findFile->save();
+
+            $fileUrl = Storage::url($fileName);
+
+            return ['status' => true, 'uploaded' => true, 'message' => 'File uploaded is finished.', 'file_url'=>$fileUrl];
         }
 
-        return ['status'=>true];
+        return ['status' => true];
     }
 }
